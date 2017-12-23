@@ -1,7 +1,8 @@
 function [matrixList] = loopMatrix(n)
-  matrixList = zeros(n,n,10);
+  matrixList = zeros(n,n,6);
   matrixList(:,:,1) = diag([ones(1,n)]);
   matrixList(:,:,2) = diag(1:n);
+  m = floor(sqrt(n));
   matrixList(:,:,3) = diag([ones(1,m), (m+1):n]);
   
   %------------------generating randomness------------------------------------
