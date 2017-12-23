@@ -69,3 +69,10 @@ for k = 1:(n*n)
   newNumber = mod(generator * newNumber, somePrime);
   pseudoRandVec(k) = newNumber - 500501;
 end
+
+R = zeros(n); %this will be the random matrix
+for i = 1:n
+  for j = 1:n
+    R(i,j) = pseudoRandVec(n*(i-1)+j);
+  end
+end
