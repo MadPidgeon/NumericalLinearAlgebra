@@ -16,13 +16,13 @@ function [x,residual_norms] = rbsgmres( A, b, tol, x0 )
   while residual_norms(n) > tol && n <= N
     Z(:,n) = r / residual_norms(n);
     V(:,n) = A*Z(:,n);
-    #for i = 1:(n-1)
-    #  U(i,n) = dot(V(:,n),V(:,i));
-    #  V(:,n) -= U(i,n)*V(:,i);
-    #end
-    #gamma = norm(V(:,n));
-    #U(n,n) = gamma;
-    #V(:,n) /= gamma;
+    %for i = 1:(n-1)
+    %  U(i,n) = dot(V(:,n),V(:,i));
+    %  V(:,n) -= U(i,n)*V(:,i);
+    %end
+    %gamma = norm(V(:,n));
+    %U(n,n) = gamma;
+    %V(:,n) /= gamma;
     [V(:,n),U(1:n,n)] = mgorth(V(:,n), V(:,1:(n-1)));
     alpha(n) = dot(r,V(:,n));
     r -= alpha(n)*V(:,n);
