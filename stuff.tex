@@ -1,0 +1,135 @@
+% ------------------------------------------------------------------------
+% Preamble Starts here:
+% ------------------------------------------------------------------------
+
+\documentclass[a4paper,dutch,reqno]{article}
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{enumerate}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{tabu}
+\usepackage{verbatim}
+\usepackage{float}
+\usepackage{tikz-cd}
+
+\usepackage{listings}
+\usepackage{graphicx}
+
+\usepackage{bbm}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1ex plus 0.5ex minus 0.2ex}
+
+\theoremstyle{plain}
+\newtheorem{stelling}{Stelling}[section]
+\newtheorem{propositie}[stelling]{Propositie}
+\newtheorem{lemma}[stelling]{Lemma}
+\newtheorem{gevolg}[stelling]{Gevolg}
+\newtheorem{corollary}[stelling]{Corollary}
+
+
+\theoremstyle{definition}
+\newtheorem{opmerking}[stelling]{Remark}
+\newtheorem{opgave}{Exercise}[section]
+\newtheorem{feit}[stelling]{Feit}
+\newtheorem{definitie}[stelling]{Definitie}
+\newtheorem{voorbeeld}[stelling]{Voorbeeld}
+
+\newcommand{\homeworkset}{1}
+\newcommand{\courseName} {Numerical Linear Algebra}
+\newcommand{\firstName}  {Dani\"el}
+\newcommand{\lastName}   {van Gent}
+\newcommand{\studId}     {1421263}
+\newcommand{\email}      {daanvangent@gmail.com}
+
+\newcommand{\N}		{\ensuremath{\mathbb{N}}}
+\newcommand{\Z}		{\ensuremath{\mathbb{Z}}}
+\newcommand{\Q}		{\ensuremath{\mathbb{Q}}}
+\newcommand{\R}		{\ensuremath{\mathbb{R}}}
+\newcommand{\C}		{\ensuremath{\mathbb{C}}}
+\newcommand{\F}		{\ensuremath{\mathbb{F}}}
+\newcommand{\m}		{\ensuremath{\mathfrak{m}}}
+\newcommand{\p}		{\ensuremath{\mathfrak{p}}}
+\newcommand{\q}		{\ensuremath{\mathfrak{q}}}
+\newcommand{\f}		{\ensuremath{\mathfrak{f}}}
+\newcommand{\g}		{\ensuremath{\mathfrak{g}}}
+\newcommand{\Oc}	{\ensuremath{\mathcal{O}}}
+
+\renewcommand{\r}		{\ensuremath{\mathfrak{r}}}
+
+\newcommand{\id}	{\text{id}}
+\newcommand{\im}	{\text{im}}
+\newcommand{\asim}	{\text{Sim}}
+\newcommand{\aaff}	{\text{Aff}}
+\newcommand{\nil}	{\text{nil}}
+\newcommand{\Supp}	{\text{Supp}}
+\newcommand{\Ann}	{\text{Ann}}
+\newcommand{\Zer}	{\text{Zer}}
+\newcommand{\Ass}	{\text{Ass}}
+\newcommand{\Ht}	{\text{ht}}
+
+
+\newcommand{\tensor} {\otimes}
+
+\newcommand{\taff}	{\aaff_2(\R)}
+\newcommand{\imp}   {\ensuremath{\Rightarrow} }
+
+\renewcommand{\implies} {\ensuremath{\Rightarrow}}
+
+\DeclareMathOperator{\len}{len}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\emb}{emb}
+\DeclareMathOperator{\gr}{gr}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\In}{in}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\Aut}{Aut}
+
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\lcm}{lcm}
+
+
+\newcommand{\hop} {\!\!\!\overset{\text{l'H\^op}}{=}}
+\newcommand{\IH} {\!\overset{\text{IH}}{=}}
+
+
+\allowdisplaybreaks[3]
+%\newcommand{\opgave}[1] {\subsection{Opgave #1}}
+
+\newcommand{\ket}[1] {\left|{#1}\right\rangle}
+\newcommand{\bra}[1] {\left\langle{#1}\right|}
+\newcommand{\braket}[2] {\left\langle{#1}\middle|{#2}\right\rangle}
+
+\begin{document}
+% ------------------------------------------------------------------------
+% Document Starts here:
+% ------------------------------------------------------------------------
+
+\begin{enumerate}
+\item GCR;
+\item ORTHODIR;
+\item Generalized Simpler Approach:
+\begin{enumerate}
+\item RB-SGMRES: Using \(Z_n = \tilde{R}_n\);
+\item Simpler GMRES: Using \(Z_n = V_n\);
+\end{enumerate}
+\item Generalized Update Approach:
+\begin{enumerate}
+\item GMRESR: Using \(Z_n = R_n\) (equivalent to original GCR);
+\item UNNAMED?: Using \(Z_n = \tilde{R}_n\) (is treated in paper, probably equivelent to `modern' GCR);
+\item \(A^TA\)-variant GMRES: Using \(Z_n = V_n\) (up to normalization equivalent to ORTHODIR);
+\end{enumerate}
+\end{enumerate}
+
+
+\end{document}
