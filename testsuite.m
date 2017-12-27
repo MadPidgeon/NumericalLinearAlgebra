@@ -1,7 +1,7 @@
 function [] = testsuite()
   sizes = [128 ... #,1000,10000,100000,1000000
     ];
-  funcs = { @gmres_call, @rbugmres, @sgmres, @rbsgmres  };
+  funcs = { @gmres_call, @rbugmres, @sgmres, @rbsgmres_fast  };
   for si = 1:length(sizes)
     n = sizes(si);
     matrices = loopMatrix(n);
