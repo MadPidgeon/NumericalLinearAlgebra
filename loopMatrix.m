@@ -1,9 +1,18 @@
-function [matrixList] = loopMatrix(n)
-  matrixList = cell(1,16);
+function [matrixList, vectorList] = loopMatrix(n)
+  N = 20;
+  matrixList = cell(1,N);
+  vectorList = cell(1,N);
+  for i = 1:N
+    vectorList(i) = ones(n,1);
+  end
+  
   matrixList(1) = sparse(diag([ones(1,n)]));
+  vectorList(1) = transpose(1:n);
   matrixList(2) = sparse(diag(1:n));
   m = floor(sqrt(n));
   matrixList(3) = sparse(diag([ones(1,m), (m+1):n]));
+  
+  
   
   %------------------generating randomness------------------------------------
   pseudoRandVec = ones(1,n*n); %numbers in [-500501,500501]
@@ -49,7 +58,7 @@ function [matrixList] = loopMatrix(n)
   end
   matrixList(14) = R;
   
-  matrixList(15) = hadamard(n - mod(n,4));
+  matrixList(15) = sparse(flip(matrixList{12}));
   
   temp = diag(1:n);
   temp(1) = 1.0e-008;
@@ -58,4 +67,17 @@ function [matrixList] = loopMatrix(n)
   temp = givensRotation(n,1,m,theta) * temp * givensRotation(n,1,n,-theta);
   matrixList(16) = sparse(temp);
   
+  matrixList(17) = sparse(flip(matrixList{1})); %anti-diagonal
+  vectorList(17) = transpose(1:n);
+  temp = ones(1,n);
+  for k = 1:n
+    temp(k) = mod(k+m,n) + 1;
+  end
+  matrixList(18) = sparse(permutationMatrix(temp));
+  vectorList(18) = transpose(1:n);
+  
+  matrixList(19) = givensRotation(n, 1, m, pi / 10); %orde 20 dus snelle cvgtie
+  
+  %product of unitary matrices:
+  matrixList(20) = sparse(matrixList{19} * matrixList{18} * matrixList{19});
 end

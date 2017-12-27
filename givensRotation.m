@@ -4,4 +4,5 @@ function [M] = givensRotation(n, i, j, theta)
   M(j,j) = cos(theta);
   M(i,j) = -sin(theta);
   M(j,i) = sin(theta);
+  M = sparse(M);
 end
