@@ -48,7 +48,7 @@ function [x,residual_norms,backward_error,forward_error,true_residual,updated_re
     true_residual(n) = norm(b-A*x)/norm(b);
     updated_residual(n) = norm(r)/norm(b);
     Z_condition_numbers(n) = cond(Z(:,1:(n-1))); % mogelijk raar
-    U_condition_numbers(n) = cond(U(:,1:(n-1)));
+    U_condition_numbers(n) = cond(U(1:(n-1),1:(n-1)));
     % -----
     % end  
     % -----
