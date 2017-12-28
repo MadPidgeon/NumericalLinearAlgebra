@@ -5,9 +5,31 @@ function [] = articlePlot()
     n = length(M1);
     true_x = ones(n,1);
     b = M1*true_x;
+    [x,residual_norms,backward_error,forward_error,true_residual,updated_residual,Z_condition_numbers] = sgmres( M1, b, 1e-8, true_x );
+    semilogy( backward_error );
+    hold on;
+    semilogy( true_residual );
+    semilogy( updated_residual );
+    semilogy( forward_error );
+    [x,residual_norms,backward_error,forward_error,true_residual,updated_residual,Z_condition_numbers] = orthodir( M1, b, 1e-8, true_x );
+    semilogy( backward_error );
+    semilogy( true_residual );
+    semilogy( updated_residual );
+    semilogy( forward_error );
+    hold off;
+  end
+  if( index == 2 )
+    n = length(M1);
+    true_x = ones(n,1);
+    b = M1*true_x;
     [x,residual_norms,backward_error,forward_error,true_residual,updated_residual,Z_condition_numbers] = rbsgmres( M1, b, 1e-8, true_x );
     semilogy( backward_error );
     hold on;
+    semilogy( true_residual );
+    semilogy( updated_residual );
+    semilogy( forward_error );
+    [x,residual_norms,backward_error,forward_error,true_residual,updated_residual,Z_condition_numbers] = gcr( M1, b, 1e-8, true_x );
+    semilogy( backward_error );
     semilogy( true_residual );
     semilogy( updated_residual );
     semilogy( forward_error );

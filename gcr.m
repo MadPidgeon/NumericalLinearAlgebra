@@ -1,16 +1,16 @@
-function [x,residual_norms,backward_error,forward_error,true_residual,updated_residual,Z_condition_numbers] = sgmres( A, b, tol, true_x, x0 )
+function [x,residual_norms,backward_error,forward_error,true_residual,updated_residual,Z_condition_numbers] = gcr( A, b, tol, true_x, x0 )
   if nargin < 5
     x0 = zeros( length( b ), 1 );
   end
   N = length(b);
   n = 1;
-  Acn = cond(A);
   residual_norms = zeros(N,1);
   backward_error = zeros(N,1);
   forward_error = zeros(N,1);
   true_residual = zeros(N,1);
   updated_residual = zeros(N,1);
-  Z_condition_numbers = zeros(N,1);
+  Z_condition_numbers = ones(N,1);
+  Acn = cond(A);
   r = b - A*x0;
   residual_norms(n) = norm(r);
   backward_error(n) = 1; % temp
@@ -18,33 +18,30 @@ function [x,residual_norms,backward_error,forward_error,true_residual,updated_re
   true_residual(n) = norm(b-A*x0)/norm(b);
   updated_residual(n) = norm(r)/norm(b);
   Z_condition_numbers(n) = 1; % temp
-  Z = zeros(N);
-  V = zeros(N);
+  x = x0;
   U = zeros(N);
-  u = zeros(N,1);
+  C = zeros(N);
+  sigma = zeros(N,1);
   alpha = zeros(N,1);
-  beta = zeros(N,1);
-  Z(:,n) = r / residual_norms(n);
   while residual_norms(n) > tol && n <= N
-    V(:,n) = A*Z(:,n);
-    [V(:,n),U(1:n,n)] = mgorth(V(:,n), V(:,1:(n-1)));
-    alpha(n) = dot(r,V(:,n));
-    r -= alpha(n)*V(:,n);
+    U(:,n) = r;
+    C(:,n) = A*U(:,n);
+    for j = 1:(n-1)
+      beta = dot(C(:,j),C(:,n)) / sigma(j);
+      U(:,n) -= beta * U(:,j);
+      C(:,n) -= beta * C(:,j);
+    end
+    sigma(n) = dot(C(:,n),C(:,n));
+    alpha(n) = dot(C(:,n),r) / sigma(n);
+    x += alpha(n)*U(:,n);
+    r -= alpha(n)*C(:,n);
     n += 1;
     residual_norms(n) = norm(r);
-    Z(:,n) = V(:,n-1);
-    % -----
-    % viezigheid
-    % -----
-    x = x0 + Z(:,1:n-1)*(U(:,1:n-1) \ alpha);
+    % lelijke stuff
     backward_error(n) = norm(b-A*x)/(norm(x)*Acn);
     forward_error(n) = norm(true_x-x)/norm(true_x);
     true_residual(n) = norm(b-A*x)/norm(b);
     updated_residual(n) = norm(r)/norm(b);
-    Z_condition_numbers(n) = cond(Z(:,1:(n-1))); % mogelijk raar
-    % -----
-    % end  
-    % -----
   end
   residual_norms = residual_norms(1:n);
   backward_error = backward_error(1:n);
@@ -52,8 +49,4 @@ function [x,residual_norms,backward_error,forward_error,true_residual,updated_re
   true_residual = true_residual(1:n);
   updated_residual = updated_residual(1:n);
   Z_condition_numbers = Z_condition_numbers(1:n);
-  n -= 1;
-  t = U(:,1:n) \ alpha;
-  x = x0 + Z(:,1:n)*t;
 end
-
