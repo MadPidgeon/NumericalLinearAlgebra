@@ -8,6 +8,7 @@ function [x,residual_norms,backward_error,forward_error,true_residual,updated_re
   N = length(b);
   n = 1;
   Acn = cond(A);
+  Anrm = norm(A);
   residual_norms = zeros(N,1);
   backward_error = zeros(N,1);
   forward_error = zeros(N,1);
@@ -42,7 +43,7 @@ function [x,residual_norms,backward_error,forward_error,true_residual,updated_re
     % viezigheid
     % -----
     x = x0 + Z(:,1:n-1)*(U(:,1:n-1) \ alpha);
-    backward_error(n) = norm(b-A*x)/(norm(x)*Acn);
+    backward_error(n) = norm(b-A*x)/(norm(x)*Anrm);
     forward_error(n) = norm(true_x-x)/norm(true_x);
     true_residual(n) = norm(b-A*x)/norm(b);
     updated_residual(n) = norm(r)/norm(b);

@@ -14,6 +14,7 @@ function [x,residual_norms,backward_error,forward_error,true_residual,updated_re
   updated_residual = zeros(N,1);
   Z_condition_numbers = ones(N,1);
   Acn = cond(A);
+  Anrm = norm(A);
   r = b - A*x0;
   residual_norms(n) = norm(r);
   backward_error(n) = 1; % temp
@@ -41,7 +42,7 @@ function [x,residual_norms,backward_error,forward_error,true_residual,updated_re
     n += 1;
     residual_norms(n) = norm(r);
     % lelijke stuff
-    backward_error(n) = norm(b-A*x)/(norm(x)*Acn);
+    backward_error(n) = norm(b-A*x)/(norm(x)*Anrm);
     forward_error(n) = norm(true_x-x)/norm(true_x);
     true_residual(n) = norm(b-A*x)/norm(b);
     updated_residual(n) = norm(r)/norm(b);

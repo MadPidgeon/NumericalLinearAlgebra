@@ -1,6 +1,6 @@
 function [] = articlePlot()
   [M0,M1,M2] = articleMatrices();
-  index = 6;
+  index = 4;
   if( index == 1 )
     n = length(M1);
     true_x = ones(n,1);
