@@ -1,4 +1,4 @@
-function [x,residual_norms,backward_error,forward_error,true_residual,updated_residual,Z_condition_numbers] = sgmres( A, b, tol, true_x, x0, iter_count )
+function [x,residual_norms,backward_error,forward_error,true_residual,updated_residual,Z_condition_numbers,U_condition_numbers] = sgmres( A, b, tol, true_x, x0, iter_count )
   if nargin < 5
     x0 = zeros( length( b ), 1 );
   end
@@ -14,6 +14,7 @@ function [x,residual_norms,backward_error,forward_error,true_residual,updated_re
   true_residual = zeros(N,1);
   updated_residual = zeros(N,1);
   Z_condition_numbers = zeros(N,1);
+  U_condition_numbers = zeros(N,1);
   r = b - A*x0;
   residual_norms(n) = norm(r);
   backward_error(n) = 1; % temp
@@ -21,6 +22,7 @@ function [x,residual_norms,backward_error,forward_error,true_residual,updated_re
   true_residual(n) = norm(b-A*x0)/norm(b);
   updated_residual(n) = norm(r)/norm(b);
   Z_condition_numbers(n) = 1; % temp
+  U_condition_numbers(n) = 1;
   Z = zeros(N);
   V = zeros(N);
   U = zeros(N);
@@ -45,6 +47,7 @@ function [x,residual_norms,backward_error,forward_error,true_residual,updated_re
     true_residual(n) = norm(b-A*x)/norm(b);
     updated_residual(n) = norm(r)/norm(b);
     Z_condition_numbers(n) = cond(Z(:,1:(n-1))); % mogelijk raar
+    U_condition_numbers(n) = cond(U(:,1:(n-1)));
     % -----
     % end  
     % -----
@@ -55,6 +58,7 @@ function [x,residual_norms,backward_error,forward_error,true_residual,updated_re
   true_residual = true_residual(1:n);
   updated_residual = updated_residual(1:n);
   Z_condition_numbers = Z_condition_numbers(1:n);
+  U_condition_numbers = U_condition_numbers(1:n);
   n -= 1;
   t = U(:,1:n) \ alpha;
   x = x0 + Z(:,1:n)*t;
