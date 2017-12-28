@@ -12,8 +12,8 @@ function [x,residual_norms,backward_error,forward_error,true_residual,updated_re
   Z_condition_numbers = zeros(N,1);
   r = b - A*x0;
   residual_norms(n) = norm(r);
-  backward_error(n) = 1e-16; % temp
-  forward_error(n) = 1e-16; % temp
+  backward_error(n) = 1; % temp
+  forward_error(n) = 1; % temp
   true_residual(n) = norm(b-A*x0)/norm(b);
   updated_residual(n) = norm(r)/norm(b);
   Z_condition_numbers(n) = 1; % temp
@@ -37,7 +37,7 @@ function [x,residual_norms,backward_error,forward_error,true_residual,updated_re
     % -----
     x = x0 + Z(:,1:n-1)*(U(:,1:n-1) \ alpha);
     backward_error(n) = norm(b-A*x)/(norm(x)*Acn);
-    forward_error(n) = norm(true_x-x)/norm(x);
+    forward_error(n) = norm(true_x-x)/norm(true_x);
     true_residual(n) = norm(b-A*x)/norm(b);
     updated_residual(n) = norm(r)/norm(b);
     Z_condition_numbers(n) = cond(Z(:,1:(n-1))); % mogelijk raar
