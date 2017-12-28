@@ -1,6 +1,9 @@
-function [x,residual_norms,backward_error,forward_error,true_residual,updated_residual,Z_condition_numbers] = rbugmres( A, b, tol, true_x, x0 )
+function [x,residual_norms,backward_error,forward_error,true_residual,updated_residual,Z_condition_numbers] = rbugmres( A, b, tol, true_x, x0, iter_count )
   if nargin < 5
     x0 = zeros( length( b ), 1 );
+  end
+  if nargin < 6
+    iter_count = N;
   end
   N = length(b);
   n = 1;
@@ -26,7 +29,7 @@ function [x,residual_norms,backward_error,forward_error,true_residual,updated_re
   x = x0;
   alpha = zeros(N,1);
   beta = zeros(N,1);
-  while residual_norms(n) > tol && n <= N
+  while residual_norms(n) > tol && n <= iter_count
     Z(:,n) = r / residual_norms(n);
     V(:,n) = A*Z(:,n);   
     [V(:,n),U(1:n,n)] = mgorth(V(:,n), V(:,1:(n-1)));

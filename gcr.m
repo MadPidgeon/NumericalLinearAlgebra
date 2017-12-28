@@ -1,6 +1,9 @@
-function [x,residual_norms,backward_error,forward_error,true_residual,updated_residual,Z_condition_numbers] = gcr( A, b, tol, true_x, x0 )
+function [x,residual_norms,backward_error,forward_error,true_residual,updated_residual,Z_condition_numbers] = gcr( A, b, tol, true_x, x0, iter_count )
   if nargin < 5
     x0 = zeros( length( b ), 1 );
+  end
+  if nargin < 6
+    iter_count = N;
   end
   N = length(b);
   n = 1;
@@ -23,7 +26,7 @@ function [x,residual_norms,backward_error,forward_error,true_residual,updated_re
   C = zeros(N);
   sigma = zeros(N,1);
   alpha = zeros(N,1);
-  while residual_norms(n) > tol && n <= N
+  while residual_norms(n) > tol && n <= iter_count
     U(:,n) = r;
     C(:,n) = A*U(:,n);
     for j = 1:(n-1)
