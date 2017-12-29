@@ -12,6 +12,9 @@ function [] = articlePlot()
     semilogy( true_residual );
     semilogy( updated_residual );
     semilogy( forward_error );
+    [x,residual_norms,backward_error,forward_error,true_residual,updated_residual,Z_condition_numbers] = sgmres_explict_mgs( M1, b, 1e-8, true_x, zeros(n,1), iter_count );
+    semilogy( updated_residual );
+    semilogy( true_residual );
     [x,residual_norms,backward_error,forward_error,true_residual,updated_residual,Z_condition_numbers] = orthodir( M1, b, 1e-8, true_x, zeros(n,1), iter_count );
     semilogy( backward_error );
     semilogy( true_residual );
@@ -20,7 +23,7 @@ function [] = articlePlot()
     hold off;
     legend('Location','southwest');
     legend('boxoff');
-    legend('Simpler GMRES backward error','Simpler GMRES true residual','Simpler GMRES residual approximation','Simpler GMRES forward error','ORTHODIR backward error','ORTHODIR true residual','ORTHODIR residual approximation','ORTHODIR forward error');
+    legend('Simpler GMRES backward error','Simpler GMRES true residual','Simpler GMRES residual approximation','Simpler GMRES forward error','bad SGMRES residual approximation','bad SGMRES true residual','ORTHODIR backward error','ORTHODIR true residual','ORTHODIR residual approximation','ORTHODIR forward error');
   end
   if( index == 2 )
     n = length(M1);
@@ -55,12 +58,14 @@ function [] = articlePlot()
     [x,residual_norms,backward_error,forward_error,true_residual,updated_residual,Z_condition_numbers,U_condition_numbers] = sgmres( M1, b, 1e-8, true_x, zeros(n,1), iter_count );
     semilogy( eps*Z_condition_numbers );
     semilogy( eps*U_condition_numbers );
+    [x,residual_norms,backward_error,forward_error,true_residual,updated_residual,Z_condition_numbers,U_condition_numbers] = orthodir( M1, b, 1e-8, true_x, zeros(n,1), iter_count );
+    semilogy( eps*U_condition_numbers );
     base = eps*cond(M1)*ones(length(Z_condition_numbers),1);
     semilogy( base );
     hold off;
     legend('Location','northwest');
     legend('boxoff');
-    legend('RBSGMRES condition number tildeR','RBSGMRES condition number U','Simpler GMRES condition number tildeR','Simpler GMRES condition number U','\epsilon\kappa(A)');
+    legend('RBSGMRES condition number tildeR','RBSGMRES condition number U','Simpler GMRES condition number tildeR','Simpler GMRES condition number U','ORTHODIR condition number U','\epsilon\kappa(A)');
   end
   if( index == 4 )
     n = length(M2);
