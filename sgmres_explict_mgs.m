@@ -34,8 +34,8 @@ function [x,residual_norms,backward_error,forward_error,true_residual,updated_re
   while residual_norms(n) > tol && n <= iter_count
     V(:,n) = A*Z(:,n);
     for j = 1:(n-1)
-      U(n,j) = dot( V(:,j), V(:,n) );
-      V(:,n) -= U(n,j)*V(:,j);
+      U(j,n) = dot( V(:,j), V(:,n) );
+      V(:,n) -= U(j,n)*V(:,j);
     end
     U(n,n) = norm(V(:,n));
     V(:,n) = V(:,n) / U(n,n);
