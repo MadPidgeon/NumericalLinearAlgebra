@@ -1,6 +1,6 @@
 function [] = articlePlot()
   [M0,M1,M2] = articleMatrices();
-  index = 4;
+  index = 1;
   if( index == 1 )
     n = length(M1);
     true_x = ones(n,1);
@@ -66,7 +66,7 @@ function [] = articlePlot()
     n = length(M2);
     true_x = ones(n,1);
     b = M2*true_x;
-    iter_count = 400; %220;
+    iter_count = 220;
     [x,residual_norms,backward_error,forward_error,true_residual,updated_residual,Z_condition_numbers] = sgmres( M2, b, 1e-8, true_x, zeros(n,1), iter_count );
     semilogy( backward_error );
     hold on;

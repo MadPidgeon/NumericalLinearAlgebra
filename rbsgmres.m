@@ -2,10 +2,10 @@ function [x,residual_norms,backward_error,forward_error,true_residual,updated_re
   if nargin < 5
     x0 = zeros( length( b ), 1 );
   end
+  N = length(b);
   if nargin < 6
     iter_count = N;
   end
-  N = length(b);
   n = 1;
   residual_norms = zeros(N,1);
   backward_error = zeros(N,1);

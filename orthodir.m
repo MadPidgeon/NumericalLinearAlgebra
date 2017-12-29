@@ -2,10 +2,10 @@ function [x,residual_norms,backward_error,forward_error,true_residual,updated_re
   if nargin < 5
     x0 = zeros( length( b ), 1 );
   end
+  N = length(b);
   if nargin < 6
     iter_count = N;
   end
-  N = length(b);
   n = 1;
   residual_norms = zeros(N,1);
   backward_error = zeros(N,1);
@@ -29,7 +29,6 @@ function [x,residual_norms,backward_error,forward_error,true_residual,updated_re
   alpha = zeros(N,1);
   U(:,n) = r;
   while residual_norms(n) > tol && n <= iter_count
-    U(:,n) = r;
     C(:,n) = A*U(:,n);
     for j = 1:(n-1)
       beta = dot(C(:,j),C(:,n)) / sigma(j);
@@ -44,7 +43,7 @@ function [x,residual_norms,backward_error,forward_error,true_residual,updated_re
     U(:,n) = C(:,n-1);
     residual_norms(n) = norm(r);
     % lelijke stuff
-    backward_error(n) = norm(b-A*x)/(norm(x)*Anrm);
+    backward_error(n) = (norm(b-A*x)/norm(x))/Anrm; %norm(b-A*x)/(norm(x)*Anrm);
     forward_error(n) = norm(true_x-x)/norm(true_x);
     true_residual(n) = norm(b-A*x)/norm(b);
     updated_residual(n) = norm(r)/norm(b);
