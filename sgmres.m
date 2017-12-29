@@ -42,13 +42,13 @@ function [x,residual_norms,backward_error,forward_error,true_residual,updated_re
     % -----
     % viezigheid
     % -----
-    x = x0 + Z(:,1:n-1)*(U(:,1:n-1) \ alpha);
+    x = x0 + Z(:,1:n-1)*(U(1:n-1,1:n-1) \ alpha(1:n-1));
     backward_error(n) = norm(b-A*x)/(norm(x)*Anrm);
     forward_error(n) = norm(true_x-x)/norm(true_x);
     true_residual(n) = norm(b-A*x)/norm(b);
     updated_residual(n) = norm(r)/norm(b);
     Z_condition_numbers(n) = cond(Z(:,1:(n-1))); % mogelijk raar
-    U_condition_numbers(n) = cond(U(:,1:(n-1)));
+    U_condition_numbers(n) = cond(U(1:(n-1),1:(n-1)));
     % -----
     % end  
     % -----
