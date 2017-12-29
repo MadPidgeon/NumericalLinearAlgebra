@@ -1,0 +1,187 @@
+% ------------------------------------------------------------------------
+% Preamble Starts here:
+% ------------------------------------------------------------------------
+
+\documentclass[a4paper,dutch,reqno]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[english]{babel}
+%\usepackage[subtle]{savetrees}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{tabu}
+\usepackage{verbatim}
+\usepackage{float}
+\usepackage{tikz-cd}
+\usepackage{stmaryrd}
+\usepackage[resetcount,linesnumbered,titlenotnumbered,noend]{algorithm2e}
+
+
+\usepackage{graphicx}
+
+\usepackage{bbm}
+
+
+\begin{document}
+
+\begin{minipage}[t]{7cm}
+\vspace{0pt}
+\begin{algorithm}[H]
+\caption{ORTHODIR}
+\SetKw{inlineUntil}{until}
+\SetKw{inlineWhile}{while}
+\SetKw{inlineStep}{step}
+\(x\leftarrow x_0\)\;
+\(r\leftarrow b-Ax\)\;
+\For{\(n=1,2,\dotsc\) \inlineWhile \(\|r\|>\texttt{tol}\) }{
+	\(u_n\leftarrow r\)\;
+	\(c_n\leftarrow A u_n\)\;
+	\For{\(i=1,2,\dotsc, (n-1)\)}{
+		\(\beta \leftarrow c_i^*c_n / \sigma_i\)\;
+		\(u_n \leftarrow u_n - \beta u_i\)\;
+		\(c_n \leftarrow c_n - \beta c_i\)\;
+	}
+	\(\sigma_n\leftarrow c_n^*c_n\)\;
+	\(\alpha\leftarrow c_n^*r / \sigma_i\)\;
+	\(x\leftarrow x + \alpha  u_n\)\;
+	\(r\leftarrow r - \alpha  c_n\)\;
+}
+\end{algorithm}
+\end{minipage}
+\begin{minipage}[t]{7cm}
+\vspace{0pt}
+\begin{algorithm}[H]
+\caption{Simpler GMRES}
+\SetKw{inlineUntil}{until}
+\SetKw{inlineWhile}{while}
+\SetKw{inlineStep}{step}
+\(r\leftarrow b-Ax\)\;
+\(z_1\leftarrow r / \|r\|\)\;
+\For{\(n=1,2,\dotsc\) \inlineWhile \(\|r\|>\texttt{tol}\) }{
+	Orthonormalize \(Az_n\) with respect to \(\{v_1,\dotsc,v_{n-1}\}\) using modified Gram-Schmidt to obtain \(v_n\) and \(u_n\) solving \(AZ_n = V_n U_n\)\;
+	\(\alpha_n\leftarrow r^*v_n\)\;
+	\(r\leftarrow r - \alpha_n v_n\)\;
+	\(z_{n+1}\leftarrow v_n\)\;
+}
+Solve \(U_nt=\alpha\) for \(t\) using backward substitution\;
+\(x\leftarrow x_0 + Z_nt\)\;
+\end{algorithm}
+\end{minipage}
+
+\begin{minipage}[t]{7cm}
+\vspace{0pt}
+\begin{algorithm}[H]
+\caption{Simpler GMRES}
+\SetKw{inlineUntil}{until}
+\SetKw{inlineWhile}{while}
+\SetKw{inlineStep}{step}
+\(r\leftarrow b-Ax\)\;
+\(z_1\leftarrow r / \|r\|\)\;
+\For{\(n=1,2,\dotsc\) \inlineWhile \(\|r\|>\texttt{tol}\) }{
+	\(v_n\leftarrow Az_n\)\;
+	\For{\(i=1,2,\dotsc, (n-1)\)}{
+		\(u_{ni} \leftarrow v_i^*v_n\)\;
+		\(v_n \leftarrow v_n - u_{ni} v_i\)\;
+	}
+	\(u_{nn}\leftarrow \|v_n\|\)\;
+	\(v_n \leftarrow v_n/u_{nn}\)\;
+	\(\alpha_n\leftarrow r^*v_n\)\;
+	\(r\leftarrow r - \alpha_n v_n\)\;
+	\(z_{n+1}\leftarrow v_n\)\;
+}
+Solve \(U_nt=\alpha\) for \(t\) using backward substitution\;
+\(x\leftarrow x_0 + Z_nt\)\;
+\end{algorithm}
+\end{minipage}
+\begin{minipage}[t]{7cm}
+\vspace{0pt}
+\begin{algorithm}[H]
+\caption{RB-SGMRES}
+\SetKw{inlineUntil}{until}
+\SetKw{inlineWhile}{while}
+\SetKw{inlineStep}{step}
+\(r\leftarrow b-Ax\)\;
+\(z_1\leftarrow r / \|r\|\)\;
+\For{\(n=1,2,\dotsc\) \inlineWhile \(\|r\|>\texttt{tol}\) }{
+	\(v_n\leftarrow Az_n\)\;
+	\For{\(i=1,2,\dotsc, (n-1)\)}{
+		\(u_{ni} \leftarrow v_i^*v_n\)\;
+		\(v_n \leftarrow v_n - u_{ni} v_i\)\;
+	}
+	\(u_{nn}\leftarrow \|v_n\|\)\;
+	\(v_n \leftarrow v_n/u_{nn}\)\;
+	\(\alpha_n\leftarrow r^*v_n\)\;
+	\(r\leftarrow r - \alpha_n v_n\)\;
+	\(z_{n+1}\leftarrow r/\|r\|\)\;
+}
+Solve \(U_nt=\alpha\) for \(t\) using backward substitution\;
+\(x\leftarrow x_0 + Z_nt\)\;
+\end{algorithm}
+\end{minipage}
+
+
+
+\begin{minipage}[t]{7cm}
+\vspace{0pt}
+\begin{algorithm}[H]
+\caption{GCR}
+\SetKw{inlineUntil}{until}
+\SetKw{inlineWhile}{while}
+\SetKw{inlineStep}{step}
+\(x\leftarrow x_0\)\;
+\(r\leftarrow b-Ax\)\;
+\For{\(n=1,2,\dotsc\) \inlineWhile \(\|r\|>\texttt{tol}\) }{
+	\(u_n\leftarrow r\)\;
+	\(c_n\leftarrow A u_n\)\;
+	\For{\(i=1,2,\dotsc, (n-1)\)}{
+		\(\beta \leftarrow c_i^*c_n / \sigma_i\)\;
+		\(u_n \leftarrow u_n - \beta u_i\)\;
+		\(c_n \leftarrow c_n - \beta c_i\)\;
+	}
+	\(\sigma_n\leftarrow c_n^*c_n\)\;
+	\(\alpha\leftarrow c_n^*r / \sigma_i\)\;
+	\(x\leftarrow x + \alpha  u_n\)\;
+	\(r\leftarrow r - \alpha  c_n\)\;
+}
+\end{algorithm}
+\end{minipage}
+\begin{minipage}[t]{7cm}
+\vspace{0pt}
+\begin{algorithm}[H]
+\caption{RB-SGMRES}
+\SetKw{inlineUntil}{until}
+\SetKw{inlineWhile}{while}
+\SetKw{inlineStep}{step}
+\(r\leftarrow b-Ax\)\;
+\(z_1\leftarrow r / \|r\|\)\;
+\For{\(n=1,2,\dotsc\) \inlineWhile \(\|r\|>\texttt{tol}\) }{
+	Orthonormalize \(Az_n\) with respect to \(\{v_1,\dotsc,v_{n-1}\}\) using modified Gram-Schmidt to obtain \(v_n\) and \(u_n\) solving \(AZ_n = V_n U_n\)\;
+	\(\alpha_n\leftarrow r^*v_n\)\;
+	\(r\leftarrow r - \alpha_n v_n\)\;
+	\(z_{n+1}\leftarrow r/\|r\|\)\;
+}
+Solve \(U_nt=\alpha\) for \(t\) using backward substitution\;
+\(x\leftarrow x_0 + Z_nt\)\;
+\end{algorithm}
+\end{minipage}
+
+
+
+\begin{comment}
+(u_n\leftarrow z_n\)
+	\(v_n\leftarrow A z_n\)\;
+	\For{\(i=1,2,\dotsc, (n-1)\)}{
+		\(\beta \leftarrow v_i^*v_n\)\;
+		\(u_n \leftarrow u_n - \beta u_i\)\;
+		\(v_n \leftarrow v_n - \beta v_i\)\;
+	}
+	\(\sigma\leftarrow \|v_n\|\)\;
+	\(v_n \leftarrow v_n/ \sigma\)\;
+	\(\)
+\end{comment}
+
+\end{document}

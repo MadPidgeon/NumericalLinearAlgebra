@@ -61,7 +61,7 @@ function [x,residual_norms,backward_error,forward_error,true_residual,updated_re
   Z_condition_numbers = Z_condition_numbers(1:n);
   U_condition_numbers = U_condition_numbers(1:n);
   n -= 1;
-  t = U(:,1:n) \ alpha;
+  t = U(1:n,1:n) \ alpha(1:n);
   x = x0 + Z(:,1:n)*t;
 end
 
