@@ -47,7 +47,7 @@ function [x,residual_norms,backward_error,forward_error,true_residual,updated_re
     % -----
     % viezigheid
     % -----
-    x = x0 + Z(:,1:n-1)*(U(1:n-1,1:n-1) \ alpha(1:n-1));
+    x = x0 + Z(:,1:n-1)* backsub(U(1:n-1,1:n-1),alpha(1:n-1));
     backward_error(n) = norm(b-A*x)/(norm(x)*Anrm);
     forward_error(n) = norm(true_x-x)/norm(true_x);
     true_residual(n) = norm(b-A*x)/norm(b);
@@ -66,7 +66,7 @@ function [x,residual_norms,backward_error,forward_error,true_residual,updated_re
   Z_condition_numbers = Z_condition_numbers(1:n);
   U_condition_numbers = U_condition_numbers(1:n);
   n -= 1;
-  t = U(1:n,1:n) \ alpha(1:n);
+  t = backsub(U(1:n,1:n),alpha(1:n));
   x = x0 + Z(:,1:n)*t;
 end
 
