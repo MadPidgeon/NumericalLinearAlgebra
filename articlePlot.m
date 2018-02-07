@@ -1,6 +1,25 @@
 function [] = articlePlot()
   [M0,M1,M2] = articleMatrices();
-  index = 1;
+  index = 0;
+  if( index == 0 )
+    n = length(M0);
+    b = ones(n,1);
+    true_x = M0\b;
+    iter_count = 100;
+    [x,residual_norms,backward_error,forward_error,true_residual,updated_residual,Z_condition_numbers] = generalized_simpler_approach( M0, b, 1e-8, true_x, zeros(n,1), iter_count );
+    hold off;
+    semilogy( backward_error );
+    hold on;
+    semilogy( forward_error );
+    [x,residual_norms,backward_error,forward_error,true_residual,updated_residual,Z_condition_numbers] = generalized_update_approach( M0, b, 1e-8, true_x, zeros(n,1), iter_count );
+    semilogy( backward_error );
+    hold on;
+    semilogy( forward_error );
+    hold off;
+    legend('Location','southwest');
+    legend('boxoff');
+    legend('backward error (simpler)', 'forward error (simpler)','backward error (updated)', 'forward error (updated)');
+  end
   if( index == 1 )
     n = length(M1);
     true_x = ones(n,1);
