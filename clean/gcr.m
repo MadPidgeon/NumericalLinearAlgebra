@@ -1,3 +1,25 @@
+% The GCR algorithm modified to compute and return various statistics about the convergence assuming the exact solution is known
+% INPUT:
+%   A          The matrix in question
+%   b          The image
+%   tol        The tolerance in residual norm, i.e. the value such that if norm(r)<tol, the algorithm terminates
+%   true_x     The value of x solving A*x=b exactly
+%   x0         The initial guess of x to start with (is 0 by default)
+%   iter_count An upper bound on the number of iteration to run (is length(b) by default)
+% OUTPUT:
+%   x                   The computed solution to A*x=b
+%   residual_norms      The value of norm(r) in each iteration
+%   backward_error      The value of norm(b-A*x)/(norm(x)*norm(A)) in each iteration
+%   forward_error       The value of norm(true_x-x)/norm(true_x) in each iteration
+%   true_residual       The value of norm(b-A*x)/norm(b) in each iteration
+%   updated_residual    The value of norm(r)/norm(b) in each iteration
+%   Z_condition_numbers The condition number of Z = [ r_n / norm(r_n) ]_n in each iteration
+
+backward_error(n) = norm(b-A*x)/(norm(x)*Anrm);
+    forward_error(n) = norm(true_x-x)/norm(true_x);
+    true_residual(n) = norm(b-A*x)/norm(b);
+    updated_residual(n) = norm(r)/norm(b);
+
 function [x,residual_norms,backward_error,forward_error,true_residual,updated_residual,Z_condition_numbers] = gcr( A, b, tol, true_x, x0, iter_count )
   if nargin < 5
     x0 = zeros( length( b ), 1 );
