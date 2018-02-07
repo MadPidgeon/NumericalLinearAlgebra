@@ -1,6 +1,8 @@
+% plots the graphs for the article depending on the value index
+
 function [] = articlePlot()
   [M0,M1,M2] = articleMatrices();
-  index = 6;
+  index = 1;
   if( index == 1 )
     n = length(M1);
     true_x = ones(n,1);
