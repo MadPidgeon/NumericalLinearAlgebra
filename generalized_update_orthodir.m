@@ -1,4 +1,4 @@
-function [x,residual_norms,backward_error,forward_error,true_residual,updated_residual,Z_condition_numbers,U_condition_numbers] = generalized_update_approach( A, b, tol, true_x, x0, iter_count )
+function [x,residual_norms,backward_error,forward_error,true_residual,updated_residual,Z_condition_numbers,U_condition_numbers] = generalized_update_orthodir( A, b, tol, true_x, x0, iter_count )
   if nargin < 5
     x0 = zeros( length( b ), 1 );
   end
@@ -41,7 +41,7 @@ function [x,residual_norms,backward_error,forward_error,true_residual,updated_re
     x += alpha(n)*P(:,n);
     r -= alpha(n)*V(:,n);
     n += 1;
-    Z(:,n) = mgorth(A*Z(:,n-1), Z(:,1:(n-1)));
+    Z(:,n) = V(:,n-1);
     residual_norms(n) = norm(r);
     % lelijke stuff
     backward_error(n) = (norm(b-A*x)/norm(x))/Anrm; %norm(b-A*x)/(norm(x)*Anrm);
