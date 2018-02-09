@@ -8,18 +8,18 @@ function [] = articlePlot()
     iter_count = 100;
     [x,residual_norms,backward_error,forward_error,true_residual,updated_residual,Z_condition_numbers] = generalized_simpler_approach( M0, b, 1e-8, true_x, zeros(n,1), iter_count );
     hold off;
-    semilogy( 0:iter_count, backward_error, "-", "linewidth", 3, "color", "k" );
+    semilogy( 0:iter_count, backward_error, "-", "linewidth", 1.5, "color", "k" );
     hold on;
-    semilogy( 0:iter_count, forward_error, ":", "linewidth", 3, "color", "k" );
+    semilogy( 0:iter_count, forward_error, "--", "linewidth", 1.5, "color", "k" );
     [x,residual_norms,backward_error,forward_error,true_residual,updated_residual,Z_condition_numbers] = generalized_update_approach( M0, b, 1e-8, true_x, zeros(n,1), iter_count );
-    semilogy( 0:iter_count, backward_error,"--", "linewidth", 3, "color", "k" );
+    semilogy( 0:iter_count, backward_error,"-.", "linewidth", 3, "color", "k" );
     hold on;
-    semilogy( 0:iter_count, forward_error,"-.", "linewidth", 3, "color", "k" );
+    semilogy( 0:iter_count, forward_error,":", "linewidth", 3, "color", "k" );
     hold off;
     axis([0 iter_count]);
     legend('Location','southwest');
     legend('boxoff');
-    legend('backward error (simpler)', 'forward error (simpler)','backward error (updated)', 'forward error (updated)');
+    legend('backward error (simpler)', 'forward error    (simpler)','backward error (updated)', 'forward error    (updated)');
   end
   if( index == 1 )
     n = length(M1);
