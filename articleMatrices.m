@@ -4,7 +4,7 @@ function [A,B,C] = articleMatrices()
   temp(1) = 1.0e-008;
   temp(2) = 2.0e-008;
   theta = pi/4;
-  temp = givensRotation(100,1,10,theta)*temp*givensRotation(100,1,100,-theta);
+  temp = givensRotation(100,1,10,theta)*temp*givensRotation(100,1,100,theta)';
   A = sparse(temp); %matrix of figure 2.1
   
   %---------- FS 183 6 (from matrix market) -----------------------------------
