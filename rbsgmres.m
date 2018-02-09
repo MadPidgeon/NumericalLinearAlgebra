@@ -45,13 +45,15 @@ function [x,residual_norms,backward_error,forward_error,true_residual,updated_re
     forward_error(n) = norm(true_x-x)/norm(true_x);
     true_residual(n) = norm(b-A*x)/norm(b);
     updated_residual(n) = norm(r)/norm(b);
-    Z_condition_numbers(n) = cond(Z(:,1:(n-1))); % mogelijk raar
+    Z_condition_numbers(n-1) = cond(Z(:,1:(n-1))); % mogelijk raar
     %Z_condition_numbers(n) = cond(Z(:,1:(n-1))'*Z(:,1:(n-1)));
-    U_condition_numbers(n) = cond(U(:,1:(n-1)));
+    U_condition_numbers(n-1) = cond(U(:,1:(n-1)));
     % -----
     % end  
     % -----
   end
+  Z_condition_numbers(n) = cond(Z(:,1:n)); % mogelijk raar
+  U_condition_numbers(n) = cond(U(:,1:n));
   residual_norms = residual_norms(1:n);
   backward_error = backward_error(1:n);
   forward_error = forward_error(1:n);
