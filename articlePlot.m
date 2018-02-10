@@ -1,11 +1,10 @@
-function [] = articlePlot()
+function [] = articlePlot(index = 1)
   [M0,M1,M2] = articleMatrices();
-  index = 5;
   if( index == 0 )
     n = length(M0);
     b = ones(n,1);
     true_x = M0\b;
-    iter_count = 100;
+    iter_count = 90;
     [x,residual_norms,backward_error,forward_error,true_residual,updated_residual,Z_condition_numbers] = generalized_simpler_approach( M0, b, 1e-8, true_x, zeros(n,1), iter_count );
     hold off;
     semilogy( 0:iter_count, backward_error, "-", "linewidth", 2, "color", "k" );
@@ -17,9 +16,11 @@ function [] = articlePlot()
     semilogy( 0:iter_count, forward_error,"--", "linewidth", 0.5, "color", "k" );
     hold off;
     axis([0 iter_count]);
+    xlabel("iteration number");
     legend('Location','southwest');
     legend('boxoff');
     legend('backward error (simpler)', 'forward error    (simpler)','backward error (updated)', 'forward error    (updated)');
+    saveas (1, "figure0.eps");
   end
   if( index == 1 )
     n = length(M1);
@@ -27,6 +28,7 @@ function [] = articlePlot()
     b = M1*true_x;
     iter_count = 60;
     [x,residual_norms,backward_error,forward_error,true_residual,updated_residual,Z_condition_numbers] = sgmres( M1, b, 1e-8, true_x, zeros(n,1), iter_count );
+    hold off;
     semilogy( 0:iter_count, backward_error, "-", "linewidth", 2, "color", "k" );
     hold on;
     semilogy( 0:iter_count, true_residual, "--", "linewidth", 2, "color", "k" );
@@ -41,10 +43,13 @@ function [] = articlePlot()
     %semilogy( updated_residual );
     semilogy( 0:iter_count, forward_error, "-.", "linewidth", 0.5, "color", "k" );
     hold off;
-    axis([0 iter_count]);
-    legend('Location','southoutside');
+    axis([0 iter_count 10^(-16) 10^2]);
     legend('boxoff');
-    legend('Simpler GMRES backward error','Simpler GMRES relative residual norm','Simpler GMRES relative error norm','relative updated residual norm','ORTHODIR backward error','ORTHODIR relative residual norm','ORTHODIR relative error norm');
+    legend('Location','southwest');
+    lgnd = legend('Simpler GMRES backward error','Simpler GMRES relative residual norm','Simpler GMRES relative error norm','relative updated residual norm','ORTHODIR backward error','ORTHODIR relative residual norm','ORTHODIR relative error norm');
+    set(lgnd,'color','none');
+    xlabel("iteration number");
+    saveas (1, "figure1.eps");
   end
   if( index == 2 )
     n = length(M1);
@@ -53,6 +58,7 @@ function [] = articlePlot()
     iter_count = 60;
     [x,residual_norms,backward_error,forward_error,true_residual,updated_residual,Z_condition_numbers] = rbsgmres( M1, b, 1e-8, true_x, zeros(n,1), iter_count );
     t = length(backward_error)-1;
+    hold off;
     semilogy( 0:t, backward_error, "-", "linewidth", 2, "color", "k" );
     hold on;
     semilogy( 0:t, true_residual, "--", "linewidth", 2, "color", "k" );
@@ -64,10 +70,13 @@ function [] = articlePlot()
     semilogy( 0:t, true_residual, "--", "linewidth", 0.5, "color", "k" );
     semilogy( 0:t, forward_error, "-.", "linewidth", 0.5, "color", "k" );
     hold off;
-    axis([0 t]);
-    legend('Location','southoutside');
+    axis([0 iter_count]);
     legend('boxoff');
-    legend('RBSGMRES backward error','RBSGMRES relative residual norm','RBSGMRES relative error norm','relative updated residual norm','GCR backward error','GCR relative residual norm','GCR relative error norm');
+    legend('Location','southwest');
+    lgnd = legend('RBSGMRES backward error','RBSGMRES relative residual norm','RBSGMRES relative error norm','relative updated residual norm','GCR backward error','GCR relative residual norm','GCR relative error norm');
+    set(lgnd,'color','none');
+    xlabel("iteration number");
+    saveas (1, "figure2.eps");
   end
   if( index == 3 )
     n = length(M1);
@@ -76,6 +85,7 @@ function [] = articlePlot()
     iter_count = 60;
     [x,residual_norms,backward_error,forward_error,true_residual,updated_residual,Z_condition_numbers,U_condition_numbers] = rbsgmres( M1, b, 1e-8, true_x, zeros(n,1), iter_count );
     t = length(forward_error) - 1;
+    hold off;
     semilogy( 0:t, eps*Z_condition_numbers, "-", "linewidth", 2, "color", "k" );
     hold on;
     semilogy( 0:t, eps*U_condition_numbers, "--", "linewidth", 2, "color", "k" );
@@ -90,7 +100,9 @@ function [] = articlePlot()
     axis([0 t]);
     legend('Location','southoutside');
     legend('boxoff');
-    legend('RBSGMRES condition number R=\tilde{R}','RBSGMRES condition number U','Simpler GMRES condition number R=V','Simpler GMRES condition number U','\epsilon\kappa(A)');
+    legend('RBSGMRES condition number \mu Z_n','RBSGMRES condition number \mu U_n','Simpler GMRES condition number \mu Z_n','Simpler GMRES condition number \mu U_n','\mu C(A)');
+    xlabel("iteration number");
+    saveas (1, "figure3.eps");  
   end
   if( index == 4 )
     n = length(M2);
@@ -98,6 +110,7 @@ function [] = articlePlot()
     b = M2*true_x;
     iter_count = 220;
     [x,residual_norms,backward_error,forward_error,true_residual,updated_residual,Z_condition_numbers] = sgmres( M2, b, 1e-8, true_x, zeros(n,1), iter_count );
+    hold off;
     semilogy( 0:iter_count, backward_error, "-", "linewidth", 2, "color", "k" );
     hold on;
     semilogy( 0:iter_count, true_residual, "--", "linewidth", 2, "color", "k" );
@@ -113,9 +126,12 @@ function [] = articlePlot()
     semilogy( 0:iter_count, forward_error, "-.", "linewidth", 0.5, "color", "k" );
     hold off;
     axis([0 iter_count]);
-    legend('Location','southoutside');
     legend('boxoff');
-    legend('Simpler GMRES backward error','Simpler GMRES relative residual norm','Simpler GMRES relative error norm','relative updated residual norm','ORTHODIR backward error','ORTHODIR relative residual norm','ORTHODIR relative error norm');
+    legend('Location','southwest');
+    lgnd = legend('Simpler GMRES backward error','Simpler GMRES relative residual norm','Simpler GMRES relative error norm','relative updated residual norm','ORTHODIR backward error','ORTHODIR relative residual norm','ORTHODIR relative error norm');
+    set(lgnd,'color','none');
+    xlabel("iteration number");
+    saveas (1, "figure4.eps");  
   end
   if( index == 5 )
     n = length(M2);
@@ -124,6 +140,7 @@ function [] = articlePlot()
     iter_count = 220;
     [x,residual_norms,backward_error,forward_error,true_residual,updated_residual,Z_condition_numbers] = rbsgmres( M2, b, 1e-8, true_x, zeros(n,1), iter_count );
     t = length(backward_error)-1;
+    hold off;
     semilogy( 0:t, backward_error, "-", "linewidth", 2, "color", "k" );
     hold on;
     semilogy( 0:t, true_residual, "--", "linewidth", 2, "color", "k" );
@@ -137,9 +154,12 @@ function [] = articlePlot()
     semilogy(  0:t,forward_error, "-.", "linewidth", 0.5, "color", "k" );
     hold off;
     axis([0 t]);
-    legend('Location','southoutside');
     legend('boxoff');
-    legend('RBSGMRES backward error','RBSGMRES relative residual norm','RBSGMRES relative error norm','relative updated residual norm','GCR backward error','GCR relative residual norm','GCR relative error norm');
+    legend('Location','southwest');
+    lgnd = legend('RBSGMRES backward error','RBSGMRES relative residual norm','RBSGMRES relative error norm','relative updated residual norm','GCR backward error','GCR relative residual norm','GCR relative error norm');
+    set(lgnd,'color','none');
+    xlabel("iteration number");
+    saveas (1, "figure5.eps");  
   end
   if( index == 6 )
     n = length(M2);
@@ -148,6 +168,7 @@ function [] = articlePlot()
     iter_count = 220;
     [x,residual_norms,backward_error,forward_error,true_residual,updated_residual,Z_condition_numbers,U_condition_numbers] = rbsgmres( M2, b, 1e-8, true_x, zeros(n,1), iter_count );
     t = length(forward_error) - 1;
+    hold off;
     semilogy( 0:t, eps*Z_condition_numbers, "-", "linewidth", 2, "color", "k" );
     hold on;
     semilogy( 0:t, eps*U_condition_numbers, "--", "linewidth", 2, "color", "k" );
@@ -159,6 +180,8 @@ function [] = articlePlot()
     axis([0 t]);
     legend('Location','southoutside');
     legend('boxoff');
-    legend('RBSGMRES condition number R','RBSGMRES condition number U','Simpler GMRES condition number R','Simpler GMRES condition number U','\epsilon\kappa(A)');
+    legend('RBSGMRES condition number \mu Z_n','RBSGMRES condition number \mu U_n','Simpler GMRES condition number \mu Z_n','Simpler GMRES condition number \mu U_n','\mu C(A)');
+    xlabel("iteration number");
+    saveas (1, "figure6.eps");  
   end
 end
